@@ -11,17 +11,17 @@
         <span class="sub-title">用户登录</span>
       </div>
       <!-- 表单 -->
-      <el-form ref="form" :model="loginForm" label-width="43px">
+      <el-form ref="loginForm" :rules="rules" :model="loginForm" label-width="43px">
         <!-- 手机号 -->
         <el-form-item>
           <el-input prefix-icon="el-icon-user" placeholder="请输入手机号" v-model="loginForm.phone"></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password"></el-input>
         </el-form-item>
         <!-- 验证码 -->
-        <el-form-item>
+        <el-form-item prop="loginCode">
           <!-- 栅格 -->
           <el-row>
             <el-col :span="17">
@@ -31,7 +31,8 @@
                 v-model="loginForm.loginCode"
               ></el-input>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="7" class="code-col">
+              <!-- 验证码 -->
               <img src="../../assets/login_captcha.png" alt class="login-code" />
             </el-col>
           </el-row>
@@ -45,8 +46,8 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button  class="my-btn" type="primary">立即创建</el-button>
-          <el-button class="my-btn" >取消</el-button>
+          <el-button class="my-btn" @click="submitForm('loginForm')" type="primary">登录</el-button>
+          <el-button class="my-btn" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -72,8 +73,31 @@ export default {
         loginCode: "",
         // 是否勾选
         isChecked: false
+      },
+      // 校验规则
+      rules: {
+        password: [
+          { require: true, message: "密码不能为空", trigger: "blur" },
+          { min: 6, max: 12, message: "密码长度为6-12位", trigger: "blur" }
+        ],
+        loginCode: [
+          { require: true, message: "验证码不能为空", trigger: "blur" },
+          { min: 4, max: 4, message: "密码长度为4位", trigger: "blur" }
+        ]
       }
     };
+  },
+  methods:{
+    submitForm(formName){
+      this.$refs[formName].validate(valid=>{
+        if(valid) {
+          this.$message.success('验证成功');
+        } else {
+          this.$message.error('验证失败');
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
@@ -127,13 +151,17 @@ export default {
         margin-left: 12px;
       }
     }
+    // 验证码栅格盒子的高度问题
+    .code-col{
+      height: 41px;
+    }
     // 验证码图片
     .login-code {
       width: 100%;
       height: 41px;
     }
     // 登录注册按钮
-    .my-btn{
+    .my-btn {
       width: 100%;
       margin-top: 26px;
       margin-left: 0;
