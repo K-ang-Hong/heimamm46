@@ -32,13 +32,17 @@
               ></el-input>
             </el-col>
             <el-col :span="7">
-              <img src="../../assets/login_captcha.png" alt="" class="login-code">
+              <img src="../../assets/login_captcha.png" alt class="login-code" />
             </el-col>
           </el-row>
         </el-form-item>
         <!-- 用户协议 -->
         <el-form-item>
-          <el-checkbox v-model="loginForm.isChecked">是否同意用户协议</el-checkbox>
+          <el-checkbox v-model="loginForm.isChecked">
+            我已阅读并同意
+            <el-link type="primary">用户协议</el-link>和
+            <el-link type="primary">隐私条款</el-link>
+          </el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button type="primary">立即创建</el-button>
@@ -123,9 +127,19 @@ export default {
         margin-left: 12px;
       }
     }
+    // 验证码图片
     .login-code {
       width: 100%;
       height: 41px;
+    }
+  }
+  // 协议区域布局
+  // 这个可以写在外层,因为这是为了代码的一行对齐
+  .el-checkbox {
+    display: flex;
+    align-items: center;
+    .el-checkbox__label {
+      display: flex;
     }
   }
 }
