@@ -22,7 +22,19 @@
         </el-form-item>
         <!-- 验证码 -->
         <el-form-item>
-          <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="loginForm.loginCode"></el-input>
+          <!-- 栅格 -->
+          <el-row>
+            <el-col :span="17">
+              <el-input
+                prefix-icon="el-icon-key"
+                placeholder="请输入验证码"
+                v-model="loginForm.loginCode"
+              ></el-input>
+            </el-col>
+            <el-col :span="7">
+              <img src="../../assets/login_captcha.png" alt="" class="login-code">
+            </el-col>
+          </el-row>
         </el-form-item>
         <!-- 用户协议 -->
         <el-form-item>
@@ -110,6 +122,10 @@ export default {
         font-size: 21px;
         margin-left: 12px;
       }
+    }
+    .login-code {
+      width: 100%;
+      height: 41px;
     }
   }
 }
