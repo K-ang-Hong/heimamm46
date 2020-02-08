@@ -45,8 +45,8 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button  class="my-btn" type="primary">立即创建</el-button>
+          <el-button class="my-btn" >取消</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -131,6 +131,12 @@ export default {
     .login-code {
       width: 100%;
       height: 41px;
+    }
+    // 登录注册按钮
+    .my-btn{
+      width: 100%;
+      margin-top: 26px;
+      margin-left: 0;
     }
   }
   // 协议区域布局
