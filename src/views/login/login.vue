@@ -62,6 +62,9 @@
 // 导入注册的对话框组件
 import registerDialog from './components/registerDialog';
 
+// 测试基本地址
+window.console.log(process.env.VUE_APP_URL);
+
 export default {
   // 组件的名字
   name: "login",
