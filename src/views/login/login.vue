@@ -47,20 +47,28 @@
         </el-form-item>
         <el-form-item>
           <el-button class="my-btn" @click="submitForm('loginForm')" type="primary">登录</el-button>
-          <el-button class="my-btn" type="primary">注册</el-button>
+          <el-button class="my-btn" @click="showRegister" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <!-- 右边的图片 -->
     <img src="../../assets/login_banner_ele.png" alt />
+    <registerDialog ref="registerDialog"></registerDialog>
   </div>
 </template>
 
 <script>
+
+// 导入注册的对话框组件
+import registerDialog from './components/registerDialog';
+
 export default {
   // 组件的名字
   name: "login",
   // 在Chrome的vue插件中可以方便的
+  components:{
+    registerDialog,
+  },
   data() {
     return {
       // 绑定数据
@@ -97,6 +105,10 @@ export default {
           return false;
         }
       });
+    },
+    showRegister(){
+      // 显示注册框
+      this.$refs.registerDialog.dialogFormVisible=true;
     }
   }
 };
@@ -134,8 +146,6 @@ export default {
       margin-left: 40px;
       // 将form表单往下移27px
       margin-bottom: 27px;
-      .logo {
-      }
       .title {
         font-size: 24px;
         margin-left: 16px;
