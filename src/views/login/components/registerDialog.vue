@@ -24,9 +24,9 @@
           <el-col :span="16">
             <el-input v-model="form.code" autocomplete="off"></el-input>
           </el-col>
-      <el-col :offset="1" :span="7" class="register-box">
-      <!-- 图片验证码 -->
-      <img @click="changeCode" class="register-code" :src="codeUrl" alt />
+          <el-col :offset="1" :span="7" class="register-box">
+            <!-- 图片验证码 -->
+            <img @click="changeCode" class="register-code" :src="codeUrl" alt />
           </el-col>
         </el-row>
       </el-form-item>
@@ -35,9 +35,9 @@
           <el-col :span="16">
             <el-input v-model="form.name" autocomplete="off"></el-input>
           </el-col>
-      <el-col :offset="1" :span="7">
-      <!-- 获取短信验证码 -->
-      <el-button @click="getSMS">点击获取验证码</el-button>
+          <el-col :offset="1" :span="7">
+            <!-- 获取短信验证码 -->
+            <el-button @click="getSMS">点击获取验证码</el-button>
           </el-col>
         </el-row>
       </el-form-item>
@@ -51,7 +51,10 @@
 
 <script>
 // 导入axios
-import axios from "axios";
+// import axios from "axios";
+
+// 导入封装的axios的请求方法
+import { sendsms } from "@/api/register.js";
 
 // 定义校验函数-邮箱手机
 const checkEmail = (rule, value, callback) => {
@@ -131,32 +134,39 @@ export default {
   methods: {
     // 获取短信验证码
     getSMS() {
-      // 开启倒计时
-      // const interId = setInterval(()=>{
-      //   // 事件的递增
-      //   this.delay--;
-      //   if(this.delay == 0){
-      //     clearInterval(interId);
-      //   }
-      // },100);
+      if (this.delay == 0) {
+        this.delay = 60;
+        // 开启倒计时
+        const interId = setInterval(() => {
+          // 事件的递增
+          this.delay--;
+          if (this.delay == 0) {
+            clearInterval(interId);
+          }
+        }, 100);
 
-      axios({
-        url: process.env.VUE_APP_URL + "/sendsms",
-        method: "post",
-        data: {
+        // axios({
+        //   url: process.env.VUE_APP_URL + "/sendsms",
+        //   method: "post",
+        //   data: {
+        //     code: this.form.code,
+        //     phone: this.form.phone
+        //   },
+        //   // withCredentials:true
+        //   withCredentials: true
+        // })
+        sendsms({
           code: this.form.code,
           phone: this.form.phone
-        },
-        // withCredentials:true
-        withCredentials: true
-      }).then(res => {
-        window.console.log(res);
-        if(res.data.code===200){
-          this.$message.success('验证码获取成功'+res.data.data.captcha)
-        }else if(res.data.code===0){
-          this.$message.success('验证码获取失败')
-        }
-      });
+        }).then(res => {
+          window.console.log(res);
+          if (res.data.code === 200) {
+            this.$message.success("验证码获取成功" + res.data.data.captcha);
+          } else if (res.data.code === 0) {
+            this.$message.success("验证码获取失败");
+          }
+        });
+      }
     },
 
     // 点击更换图片验证码
