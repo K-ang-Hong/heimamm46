@@ -35,7 +35,7 @@
       <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
         <el-input show-password v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="图形码" :label-width="formLabelWidth">
+      <el-form-item label="图形码" :label-width="formLabelWidth" prop="code">
         <el-row>
           <el-col :span="16">
             <el-input v-model="form.code" autocomplete="off"></el-input>
@@ -46,7 +46,7 @@
           </el-col>
         </el-row>
       </el-form-item>
-      <el-form-item label="验证码" :label-width="formLabelWidth">
+      <el-form-item label="验证码" :label-width="formLabelWidth" prop="rcode">
         <el-row>
           <el-col :span="16">
             <el-input v-model="form.recode" autocomplete="off"></el-input>
@@ -163,6 +163,16 @@ export default {
     };
   },
   methods: {
+    // 关闭表单
+    cancel(formName) {
+      window.console.log(formName)
+      // 关闭表单
+      this.dialogFormVisible = false;
+      // this.$refs[formName].resetFields();
+      // 人为的清空
+      // this.imageUrl = '';
+    },
+
     // 表单的提交方法
     // 提交表单
     submitForm(formName) {
@@ -182,6 +192,10 @@ export default {
               this.$message.success("恭喜你,注册成功");
               // 关闭对话框
               this.dialogFormVisible = false;
+                            // 清空数据
+              this.$refs[formName].resetFields();
+              // 人为的清空 图片
+              this.imageUrl = '';
             } else if (res.data.code === 201) {
               this.$message.error(res.data.message);
             }
