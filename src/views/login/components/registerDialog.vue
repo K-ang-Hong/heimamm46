@@ -73,7 +73,7 @@
 // import axios from "axios";
 
 // 导入封装的axios的请求方法
-import { sendsms } from "@/api/register.js";
+import { sendsms, register } from "@/api/register.js";
 
 // 定义校验函数-邮箱手机
 const checkEmail = (rule, value, callback) => {
@@ -118,9 +118,9 @@ export default {
         // 图片验证码
         code: "",
         // 用户的头像地址
-        avatar:"",
+        avatar: "",
         // 短信验证码
-        rcode:"",
+        rcode: ""
       },
       // 校验规则
       rules: {
@@ -143,8 +143,8 @@ export default {
           { validator: checkEmail, trigger: "blur" }
         ],
         avatar: [
-          {required:true ,message:"用户头像不能为空",trigger:"blur"},
-        ],
+          { required: true, message: "用户头像不能为空", trigger: "blur" }
+        ]
       },
       // 左侧的文本宽度
       formLabelWidth: "62px",
@@ -166,14 +166,31 @@ export default {
     // 表单的提交方法
     // 提交表单
     submitForm(formName) {
-      this.$refs[formName].validate(valid=>{
-        if(valid){
-          this.$message.success('验证成功');
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          // this.$message.success('验证成功');
+          // 调用接口
+          register({
+            username: this.form.username,
+            password: this.form.password,
+            phone: this.form.phone,
+            email: this.form.email,
+            avatar: this.form.avatar,
+            rcode: this.form.rcode
+          }).then(res => {
+            if (res.data.code === 200) {
+              this.$message.success("恭喜你,注册成功");
+              // 关闭对话框
+              this.dialogFormVisible = false;
+            } else if (res.data.code === 201) {
+              this.$message.error(res.data.message);
+            }
+          });
         } else {
-          this.$message.error('验证失败');
+          this.$message.error("验证失败");
           return false;
         }
-      })
+      });
     },
 
     // 上传成功
@@ -184,7 +201,7 @@ export default {
       // 保存 服务器返回的图片的地址
       this.form.avatar = res.data.file_path;
       // 表单中,头像的验证,当头像上传成功后,重新校验,清除提示信息
-      this.$refs.registerForm.validateField('avatar')
+      this.$refs.registerForm.validateField("avatar");
     },
     // 上传之前
     beforeAvatarUpload(file) {
