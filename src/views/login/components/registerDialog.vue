@@ -5,6 +5,7 @@
     center
     title="用户注册"
     :visible.sync="dialogFormVisible"
+    ref="registerForm"
   >
     <el-form :model="form" :rules="rules" ref="registerForm">
       <el-form-item label="头像" prop="avatar">
@@ -48,7 +49,7 @@
       <el-form-item label="验证码" :label-width="formLabelWidth">
         <el-row>
           <el-col :span="16">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
+            <el-input v-model="form.recode" autocomplete="off"></el-input>
           </el-col>
           <el-col :offset="1" :span="7">
             <!-- 获取短信验证码 -->
@@ -62,7 +63,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      <el-button type="primary" @click="submitForm('registerForm')">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -118,6 +119,8 @@ export default {
         code: "",
         // 用户的头像地址
         avatar:"",
+        // 短信验证码
+        rcode:"",
       },
       // 校验规则
       rules: {
@@ -160,6 +163,19 @@ export default {
     };
   },
   methods: {
+    // 表单的提交方法
+    // 提交表单
+    submitForm(formName) {
+      this.$refs[formName].validate(valid=>{
+        if(valid){
+          this.$message.success('验证成功');
+        } else {
+          this.$message.error('验证失败');
+          return false;
+        }
+      })
+    },
+
     // 上传成功
     handleAvatarSuccess(res, file) {
       window.console.log(res);
