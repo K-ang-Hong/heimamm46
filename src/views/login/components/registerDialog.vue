@@ -183,6 +183,8 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
       // 保存 服务器返回的图片的地址
       this.form.avatar = res.data.file_path;
+      // 表单中,头像的验证,当头像上传成功后,重新校验,清除提示信息
+      this.$refs.registerForm.validateField('avatar')
     },
     // 上传之前
     beforeAvatarUpload(file) {
