@@ -75,30 +75,33 @@
 // 导入封装的axios的请求方法
 import { sendsms, register } from "@/api/register.js";
 
-// 定义校验函数-邮箱手机
-const checkEmail = (rule, value, callback) => {
-  const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+// 导入表单的校验函数
+import {checkPhone,checkEmail} from '@/utils/validator.js'
 
-  if (reg.test(value) == true) {
-    callback();
-  } else {
-    callback(new Error("邮箱格式不正确"));
-  }
-};
+// 定义校验函数-邮箱
+// const checkEmail = (rule, value, callback) => {
+//   const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+
+//   if (reg.test(value) == true) {
+//     callback();
+//   } else {
+//     callback(new Error("邮箱格式不正确"));
+//   }
+// };
 // 验证手机号的 函数
-const checkPhone = (rule, value, callback) => {
-  // 接收参数 value
-  // 定义正则表达式
-  const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
-  // 使用正则校验格式是否满足
-  if (reg.test(value) == true) {
-    // 对
-    callback();
-  } else {
-    // 错
-    callback(new Error("手机号格式不对哦，请检查"));
-  }
-};
+// const checkPhone = (rule, value, callback) => {
+//   // 接收参数 value
+//   // 定义正则表达式
+//   const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+//   // 使用正则校验格式是否满足
+//   if (reg.test(value) == true) {
+//     // 对
+//     callback();
+//   } else {
+//     // 错
+//     callback(new Error("手机号格式不对哦，请检查"));
+//   }
+// };
 
 export default {
   data() {
